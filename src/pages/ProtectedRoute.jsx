@@ -1,10 +1,9 @@
-import { useCookies } from 'react-cookie';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const [cookies] = useCookies([]);
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
   
-  if (!cookies.token) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
   

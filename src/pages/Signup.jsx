@@ -40,6 +40,7 @@ const Signup = () => {
       );
       const { success, message } = data;
       if (success) {
+        localStorage.setItem("isLoggedIn","true")
         handleSuccess(message);
         setTimeout(() => {
           navigate("/");

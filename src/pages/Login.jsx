@@ -40,6 +40,7 @@ const Login = () => {
       console.log(data);
       const { success, message } = data;
       if (success) {
+        localStorage.setItem("isLoggedIn","true")
         handleSuccess(message);
         setTimeout(() => {
           navigate("/");

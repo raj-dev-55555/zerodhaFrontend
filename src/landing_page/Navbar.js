@@ -58,6 +58,7 @@ function Navbar() {
   const isLoggedIn = !!cookies.token;
 
   const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn")
     removeCookie("token");
     navigate("/");
   };
