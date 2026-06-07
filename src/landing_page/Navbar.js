@@ -55,7 +55,8 @@ import { useCookies } from "react-cookie";
 function Navbar() {
   const [cookies, removeCookie] = useCookies([]);
   const navigate = useNavigate();
-  const isLoggedIn = !!cookies.token;
+  // const isLoggedIn = !!cookies.token;
+  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
 
   const handleLogout = () => {
         localStorage.removeItem("isLoggedIn")
