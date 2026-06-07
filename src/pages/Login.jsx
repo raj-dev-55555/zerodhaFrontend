@@ -39,13 +39,22 @@ const Login = () => {
       );
       console.log(data);
       const { success, message } = data;
+
       if (success) {
-        localStorage.setItem("isLoggedIn","true")
+        localStorage.setItem("isLoggedIn", "true");
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/");
+          const redirect = localStorage.getItem("redirectTo");
+          if (redirect) {
+            localStorage.removeItem("redirectTo");
+            window.location.href = redirect;
+          } else {
+            navigate("/");
+          }
         }, 1000);
-      } else {
+      }
+
+      else {
         handleError(message);
       }
     } catch (error) {
@@ -59,37 +68,37 @@ const Login = () => {
   };
 
   return (
-     <div className="form_page">
-    <div className="form_container">
-      <h2>Login Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={handleOnChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-        <span>
-          Already have an account? <Link to={"/signup"}>Signup</Link>
-        </span>
-      </form>
-      <ToastContainer />
-    </div>
+    <div className="form_page">
+      <div className="form_container">
+        <h2>Login Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={email}
+              placeholder="Enter your email"
+              onChange={handleOnChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={handleOnChange}
+            />
+          </div>
+          <button type="submit">Submit</button>
+          <span>
+            Already have an account? <Link to={"/signup"}>Signup</Link>
+          </span>
+        </form>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

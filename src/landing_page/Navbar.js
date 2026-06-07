@@ -59,7 +59,7 @@ function Navbar() {
   const isLoggedIn = !!localStorage.getItem("isLoggedIn");
 
   const handleLogout = () => {
-        localStorage.removeItem("isLoggedIn")
+    localStorage.removeItem("isLoggedIn")
     removeCookie("token");
     navigate("/");
   };
@@ -97,12 +97,29 @@ function Navbar() {
                 <Link className="nav-link active" to="/support">Support</Link>
               </li>
 
+
+
               {/* Dashboard - login hone par hi dikhega */}
               {isLoggedIn && (
                 <li className="nav-item">
-                  <a className="nav-link active" href="https://zerodha-dashboard.onrender.com">Dashboard</a>
+                  <a className="nav-link active"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      if (isLoggedIn) {
+                        window.location.href = "https://zerodhadashboard-6p87.onrender.com/";
+                      } else {
+                        localStorage.setItem("redirectTo", "https://zerodhadashboard-6p87.onrender.com/");
+                        navigate("/login");
+                      }
+                    }}
+                  >Dashboard</a>
                 </li>
               )}
+
+
+
+
+
 
               {/* Login nahi hai to Login dikhe */}
               {!isLoggedIn && (
