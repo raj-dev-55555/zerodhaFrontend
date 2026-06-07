@@ -20,7 +20,7 @@ const Home = () => {
         { withCredentials: true }
       );
       const { status, user } = data;
-      setUsername(user);
+      setUsername(user); 
       return status
         ? toast(`Hello ${user}`, {
             position: "top-right",
