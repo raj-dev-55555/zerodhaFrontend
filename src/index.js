@@ -18,10 +18,12 @@ import ProtectedRoute from './pages/ProtectedRoute';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
  
+  // BrowserRouter ka kam URL change karna bina page reloade kiye huye
   <BrowserRouter>
   <CookiesProvider>
   <Navbar></Navbar>
-   <Routes>
+  {/* yaha Routes check karta hai ke kaun sa route match hua  or usko render karvata hai or Route unko render karte hai  */}
+    <Routes>    
     <Route path='/' element={<HomePage></HomePage>}></Route>
     <Route path='/signup' element={<Signup></Signup>}></Route>
     <Route path='/about' element={<AboutPage></AboutPage>}></Route>

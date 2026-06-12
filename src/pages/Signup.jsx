@@ -40,12 +40,16 @@ const Signup = () => {
       );
       const { success, message } = data;
       if (success) {
-        localStorage.setItem("isLoggedIn","true")
+    
         handleSuccess(message);
+
         setTimeout(() => {
           navigate("/");
+        window.location.reload();
+
         }, 1000);
-      } else {
+      } 
+      else {
         handleError(message);
       }
     } catch (error) {
@@ -104,5 +108,79 @@ const Signup = () => {
     </div>
   );
 };
+
+export default Signup;
+
+
+
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+function Signup() {
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        data,
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        navigate("/");
+        window.location.reload();
+      } else {
+        alert(res.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Signup</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          onChange={handleChange}
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
+
+        <button type="submit">Signup</button>
+      </form>
+    </div>
+  );
+}
 
 export default Signup;

@@ -64,6 +64,7 @@ function Navbar() {
     navigate("/");
   };
 
+  
   return (
     <nav className="navbar bg-white navbar-expand-lg border-bottom">
       <div className="container-fluid p-2">
