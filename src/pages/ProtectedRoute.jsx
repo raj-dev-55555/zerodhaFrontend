@@ -25,7 +25,9 @@ function ProtectedRoute({ children }) {
     const checkAuth = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:8080/api/auth/verify",
+        "https://zerodhabackend-m6gu.onrender.com/api/auth/verify",
+
+          // "http://localhost:8080/api/auth/verify",
           {},
           { withCredentials: true }
         );

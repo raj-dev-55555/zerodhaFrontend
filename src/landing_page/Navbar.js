@@ -48,20 +48,66 @@
 
 
 
-import React from "react";
+// import React from "react";
+// import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import axios from "axios";
+// import { useCookies } from "react-cookie";
 
 function Navbar() {
-  const [cookies, removeCookie] = useCookies([]);
+  // const [cookies, removeCookie] = useCookies([]);
   const navigate = useNavigate();
   // const isLoggedIn = !!cookies.token;
-  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
+  // const isLoggedIn = !!localStorage.getItem("isLoggedIn");
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState("");
+useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const res = await axios.post(
+          "http://localhost:8080/api/auth/verify",
+          {},
+          { withCredentials: true }
+        );
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
-    removeCookie("token");
-    navigate("/");
+        if (res.data.status) {
+          setIsLoggedIn(true);
+          setUser(res.data.user);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    verifyUser();
+  }, []);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("isLoggedIn")
+  //   removeCookie("token");
+  //   navigate("/");
+  // };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "https://zerodhabackend-m6gu.onrender.com/api/auth/logout",
+        
+        {},
+        { withCredentials: true }
+      );
+
+      setIsLoggedIn(false);
+      setUser("");
+      navigate("/")
+        window.location.reload();
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   
@@ -145,3 +191,109 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState("");
+  const navigate = useNavigate()
+
+  // 🔥 VERIFY USER ON LOAD
+  useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const res = await axios.post(
+          "http://localhost:8080/api/auth/verify",
+          {},
+          { withCredentials: true }
+        );
+
+        if (res.data.status) {
+          setIsLoggedIn(true);
+          setUser(res.data.user);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    verifyUser();
+  }, []);
+
+  // 🔥 LOGOUT
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8080/api/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      setIsLoggedIn(false);
+      setUser("");
+      navigate("/")
+        window.location.reload();
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <nav className="navbar bg-white navbar-expand-lg border-bottom">
+      <div className="container-fluid p-2">
+
+        <Link className="navbar-brand" to="/">
+          <img src="media/images/logo.svg" alt="Logo" style={{ width: "30%" }} />
+        </Link>
+
+        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+
+          <li className="nav-item">
+            <Link className="nav-link" to="/">Home</Link>
+          </li>
+
+          {!isLoggedIn ? (
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/signup">Signup</Link>
+              </li>
+
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <span className="nav-link">Hi, {user}</span>
+              </li>
+
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">About</Link>
+              </li>
+
+              <li className="nav-item">
+                <button className="btn btn-danger ms-2" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
+
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
+
+

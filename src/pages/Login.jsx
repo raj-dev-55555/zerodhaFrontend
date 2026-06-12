@@ -35,7 +35,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://zerodhabackend-m6gu.onrender.com/login",
+        "https://zerodhabackend-m6gu.onrender.com/api/auth/login",
         {
           ...inputValue,
         },
@@ -114,12 +114,81 @@ export default Login;
 
 
 
+// // import React, { useState } from "react";
+// // import axios from "axios";
+// // import { useNavigate } from "react-router-dom";
+
+// // function Login() {
+// //   const navigate = useNavigate();
+
+// //   const [data, setData] = useState({
+// //     email: "",
+// //     password: ""
+// //   });
+
+// //   const handleChange = (e) => {
+// //     setData({ ...data, [e.target.name]: e.target.value });
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+
+// //     try {
+// //       const res = await axios.post(
+// //         "http://localhost:8080/api/auth/login",
+// //         data,
+// //         { withCredentials: true }
+// //       );
+
+// //       if (res.data.success) {
+// //         navigate("/");
+// //         window.location.reload();
+
+// //       } else {
+// //         alert(res.data.message);
+// //       }
+// //     } catch (err) {
+// //       console.log(err);
+// //     }
+// //   };
+
+// //   return (
+// //     <div>
+// //       <h2>Login</h2>
+
+// //       <form onSubmit={handleSubmit}>
+// //         <input
+// //           type="email"
+// //           name="email"
+// //           placeholder="Email"
+// //           onChange={handleChange}
+// //         />
+
+// //         <input
+// //           type="password"
+// //           name="password"
+// //           placeholder="Password"
+// //           onChange={handleChange}
+// //         />
+
+// //         <button type="submit">Login</button>
+// //       </form>
+// //     </div>
+// //   );
+// // }
+
+// // export default Login;
+
+
 // import React, { useState } from "react";
 // import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+// import { useNavigate, useLocation } from "react-router-dom";
 
 // function Login() {
 //   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   const from = location.state?.from?.pathname; // 👈 protected route memory
 
 //   const [data, setData] = useState({
 //     email: "",
@@ -141,12 +210,20 @@ export default Login;
 //       );
 
 //       if (res.data.success) {
-//         navigate("/");
-//         window.location.reload();
 
+//         // ⭐ CASE 1: came from protected route
+//         if (from) {
+//           navigate(from, { replace: true });
+//         } 
+//         // ⭐ CASE 2: direct login
+//         else {
+//           navigate("/");
+//         }
 //       } else {
 //         alert(res.data.message);
 //       }
+//       window.location.reload();
+
 //     } catch (err) {
 //       console.log(err);
 //     }
@@ -178,83 +255,6 @@ export default Login;
 // }
 
 // export default Login;
-
-
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
-
-function Login() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname; // 👈 protected route memory
-
-  const [data, setData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const res = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        data,
-        { withCredentials: true }
-      );
-
-      if (res.data.success) {
-
-        // ⭐ CASE 1: came from protected route
-        if (from) {
-          navigate(from, { replace: true });
-        } 
-        // ⭐ CASE 2: direct login
-        else {
-          navigate("/");
-        }
-      } else {
-        alert(res.data.message);
-      }
-      window.location.reload();
-
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  return (
-    <div>
-      <h2>Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  );
-}
-
-export default Login;
 
 
 
