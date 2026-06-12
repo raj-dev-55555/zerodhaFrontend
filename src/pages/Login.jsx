@@ -60,7 +60,7 @@ const Login = () => {
       else {
         handleError(message);
       }
-      window.location.reload();
+      // window.location.reload();
 
     } catch (error) {
       console.log(error);

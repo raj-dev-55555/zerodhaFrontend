@@ -103,7 +103,7 @@ useEffect(() => {
       setIsLoggedIn(false);
       setUser("");
       navigate("/")
-        window.location.reload();
+      
 
     } catch (err) {
       console.log(err);
