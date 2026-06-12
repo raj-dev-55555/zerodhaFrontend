@@ -102,7 +102,7 @@ useEffect(() => {
 
       setIsLoggedIn(false);
       setUser("");
-      navigate("/")
+      navigate("/login")
       
 
     } catch (err) {
