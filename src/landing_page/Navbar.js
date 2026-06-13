@@ -5,10 +5,10 @@ import axios from "axios";
 function Navbar() {
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // 👈 IMPORTANT
+  const [isLoggedIn, setIsLoggedIn] = useState(null); // IMPORTANT (loading state)
   const [user, setUser] = useState("");
 
-  // 🔥 VERIFY USER
+  // 🔥 VERIFY USER ON LOAD
   useEffect(() => {
     const verifyUser = async () => {
       try {
@@ -32,7 +32,7 @@ function Navbar() {
     verifyUser();
   }, []);
 
-  // 🔥 LOGOUT FIXED
+  // 🔥 LOGOUT
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -44,17 +44,19 @@ function Navbar() {
       setIsLoggedIn(false);
       setUser("");
 
-      navigate("/login"); // better UX than home
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }
   };
 
-  // 🔥 LOADING STATE (IMPORTANT)
+  // 🔥 LOADING STATE (VERY IMPORTANT)
   if (isLoggedIn === null) {
     return (
-      <nav className="navbar bg-white border-bottom p-2">
-        Loading...
+      <nav className="navbar bg-white navbar-expand-lg border-bottom p-2">
+        <div className="container-fluid">
+          Loading...
+        </div>
       </nav>
     );
   }
@@ -63,58 +65,103 @@ function Navbar() {
     <nav className="navbar bg-white navbar-expand-lg border-bottom">
       <div className="container-fluid p-2">
 
+        {/* LOGO */}
         <Link className="navbar-brand" to="/">
-          <img src="media/images/logo.svg" alt="Logo" style={{ width: "30%" }} />
+          <img
+            src="media/images/logo.svg"
+            alt="Logo"
+            style={{ width: "30%" }}
+          />
         </Link>
 
-        <ul className="navbar-nav ms-auto">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-          {!isLoggedIn && (
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+            {/* SIGNUP (ONLY IF NOT LOGGED IN) */}
+            {!isLoggedIn && (
+              <li className="nav-item">
+                <Link className="nav-link active" to="/signup">
+                  Signup
+                </Link>
+              </li>
+            )}
+
             <li className="nav-item">
-              <Link className="nav-link" to="/signup">Signup</Link>
+              <Link className="nav-link active" to="/about">
+                About
+              </Link>
             </li>
-          )}
 
-          <li className="nav-item">
-            <Link className="nav-link" to="/about">About</Link>
-          </li>
-
-          <li className="nav-item">
-            <Link className="nav-link" to="/products">Product</Link>
-          </li>
-
-          <li className="nav-item">
-            <Link className="nav-link" to="/pricing">Pricing</Link>
-          </li>
-
-          <li className="nav-item">
-            <Link className="nav-link" to="/support">Support</Link>
-          </li>
-
-          {isLoggedIn && (
             <li className="nav-item">
-              <span className="nav-link">Hi, {user}</span>
+              <Link className="nav-link active" to="/products">
+                Product
+              </Link>
             </li>
-          )}
 
-          {!isLoggedIn && (
             <li className="nav-item">
-              <Link className="nav-link" to="/login">Login</Link>
+              <Link className="nav-link active" to="/pricing">
+                Pricing
+              </Link>
             </li>
-          )}
 
-          {isLoggedIn && (
             <li className="nav-item">
-              <button
-                className="btn btn-outline-danger nav-link"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+              <Link className="nav-link active" to="/support">
+                Support
+              </Link>
             </li>
-          )}
 
-        </ul>
+            {/* DASHBOARD (ONLY IF LOGGED IN) */}
+            {isLoggedIn && (
+              <li className="nav-item">
+                <a
+                  className="nav-link active"
+                  href="https://zerodhadashboard-6p87.onrender.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Dashboard
+                </a>
+              </li>
+            )}
+
+            {/* LOGIN */}
+            {!isLoggedIn && (
+              <li className="nav-item">
+                <Link className="nav-link active" to="/login">
+                  Login
+                </Link>
+              </li>
+            )}
+
+            {/* USER NAME */}
+            {isLoggedIn && user && (
+              <li className="nav-item">
+                <span className="nav-link">Hi, {user}</span>
+              </li>
+            )}
+
+            {/* LOGOUT */}
+            {isLoggedIn && (
+              <li className="nav-item">
+                <button
+                  className="btn btn-outline-danger nav-link"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
+            )}
+
+          </ul>
+        </div>
       </div>
     </nav>
   );
